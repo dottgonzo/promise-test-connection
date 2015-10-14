@@ -1,0 +1,29 @@
+{
+  "name": "promise-test-connection",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./tests/main.js",
+    "hw": "git add -A && git commit -m 'oki'&&npm version patch -m patch&&git add -A && git commit --amend -C HEAD&& git push&&npm publish",
+    "patch": "npm version patch -m patch&&git add -A && git commit --amend -C HEAD&& git push&&npm publish",
+    "prepublish": "npm test"
+    },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dottgonzo/promise-test-connection.git"
+  },
+  "author": "",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/dottgonzo/promise-test-connection/issues"
+  },
+  "dependencies": {
+    "connection-tester": "0.0.7",
+    "promise": "^7.0.4"
+  },
+  "devDependencies": {
+    "timerdaemon": "0.0.2",
+    "verbo": "0.0.9"
+  }
+}
