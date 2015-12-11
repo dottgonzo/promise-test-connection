@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./tests/main.js",
+    "test": "mocha",
+    "start": "node ./run/main.js",
     "hw": "git add -A && git commit -m 'oki'&&npm version patch -m patch&&git add -A && git commit --amend -C HEAD&& git push&&npm publish",
     "patch": "npm version patch -m patch&&git add -A && git commit --amend -C HEAD&& git push&&npm publish",
     "prepublish": "npm test"
@@ -19,11 +20,9 @@
     "url": "https://github.com/dottgonzo/promise-test-connection/issues"
   },
   "dependencies": {
-    "connection-tester": "0.0.7",
-    "promise": "^7.0.4"
+    "promised-exec": "^1.0.1"
   },
   "devDependencies": {
-    "timerdaemon": "0.0.2",
-    "verbo": "0.0.9"
+    "chai": "^3.4.1"
   }
 }
