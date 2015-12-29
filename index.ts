@@ -124,17 +124,10 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
             tests.push(googleFn)
         }
 
-
         if (obj.server) {
-
-
             if (obj.server == true) {
-
-
                 tests.push(kernelserverFn)
             } else {
-
-
                 let serverFn = function(callback) {
 
                     let callbacked = false;
@@ -160,22 +153,10 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
                 };
                 tests.push(serverFn)
             }
-
-
-
-
         };
-
-
-
     }
 
-
-
-
     return new Promise(function(resolve, reject) {
-
-
         async.series(tests,
             // optional callback
             function(err, results) {
