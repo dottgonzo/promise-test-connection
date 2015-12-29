@@ -1,6 +1,6 @@
 {
   "name": "promise-test-connection",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,7 @@
     "url": "https://github.com/dottgonzo/promise-test-connection.git"
   },
   "bin": {
-    "connectionverify": "bin/connection.js",
-    "connectioninfo": "bin/network.js"
+    "connectioninfo": "./bin/main.js"
   },
   "author": "",
   "license": "GPLv2",
