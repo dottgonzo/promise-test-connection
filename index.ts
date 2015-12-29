@@ -8,12 +8,7 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
 
 
     let response: { ping?: boolean, get?: boolean, server?: boolean, ip?: string } = {};
-
-
     let tests = [];
-
-
-
     let kernelserverFn = function(callback) {
         console.log("server")
 
@@ -53,9 +48,6 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
         }, 10000)
 
     };
-
-
-
 
     let googleFn = function(callback) {
         console.log("get")
@@ -111,9 +103,6 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
 
 
     if (!obj) {
-
-
-
         tests.push(pingFn, googleFn, kernelserverFn)
     } else {
         if (obj.ping) {
