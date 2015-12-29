@@ -6,7 +6,6 @@ import * as async from "async";
 
 export =function(obj: { server: any, ping: boolean, get: boolean }) {
 
-
     let response: { ping?: boolean, get?: boolean, server?: boolean, ip?: string } = {};
     let tests = [];
     let kernelserverFn = function(callback) {
