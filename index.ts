@@ -13,6 +13,14 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
         console.log("server")
 
         let callbacked = false;
+        let timo = setTimeout(function() {
+            if (!callbacked) {
+                response.ip = "none";
+                response.server = false;
+                callback(new Error("no response from server"))
+            }
+        }, 10000)
+
         http.get("http://ingecotech.com:9090/ip", function(res) {
 
             res.setEncoding('utf8');
@@ -27,78 +35,84 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
                 }
             });
             res.on('end', function() {
-                callback()
                 callbacked = true;
+                clearTimeout(timo);
+                callback()
+
             });
 
         }).on('error', function(e) {
-            response.server = false;
+
             callbacked = true;
+            clearTimeout(timo);
+            response.server = false;
             response.ip = "none";
             callback(new Error(e))
         });
 
 
-        setTimeout(function() {
-            if (!callbacked) {
-                response.ip = "none";
-                response.server = false;
-                callback(new Error("no response from server"))
-            }
-        }, 10000)
+
 
     };
 
     let googleFn = function(callback) {
         console.log("get")
         let callbacked = false;
-        http.get("http://www.google.com/index.html", function() {
-
-            
-            // consume response body
-            
-            response.get = true;
-            callbacked = true;
-            callback()
-        }).on('error', function(e) {
-            response.get = false;
-            callbacked = true;
-            callback(new Error(e))
-        });
-        setTimeout(function() {
+        let timo = setTimeout(function() {
             if (!callbacked) {
                 response.get = false;
                 callback(new Error("no response from google"))
             }
         }, 10000)
+        http.get("http://www.google.com/index.html", function() {
+
+            
+            // consume response body
+            callbacked = true;
+            clearTimeout(timo);
+            response.get = true;
+
+            callback()
+        }).on('error', function(e) {
+            callbacked = true;
+            clearTimeout(timo);
+            response.get = false;
+
+            callback(new Error(e))
+        });
+
 
     };
 
     let pingFn = function(callback) {
         let callbacked = false;
-        console.log("ping")
-        child_process.exec(__dirname + "/ping.sh", { timeout: 10000 }, function(error, stdout, stderr) {
-            if (error != null) {
-                response.ping = false;
-                callbacked = true;
-                callback(new Error(error + ""))
-            } else if (stderr && stderr != null) {
-                response.ping = false;
-                callbacked = true;
-                callback(new Error(stderr + ""))
-            } else {
-                callbacked = true;
-                response.ping = true;
-                callback()
-            }
-        });
-
-        setTimeout(function() {
+        let timo = setTimeout(function() {
             if (!callbacked) {
                 response.ping = false;
                 callback(new Error("no ping"))
             }
         }, 10000)
+        console.log("ping")
+        child_process.exec(__dirname + "/ping.sh", { timeout: 10000 }, function(error, stdout, stderr) {
+            if (error != null) {
+                callbacked = true;
+                clearTimeout(timo);
+                response.ping = false;
+                callback(new Error(error + ""))
+            } else if (stderr && stderr != null) {
+                callbacked = true;
+                clearTimeout(timo);
+                response.ping = false;
+                callback(new Error(stderr + ""))
+            } else {
+                callbacked = true;
+                clearTimeout(timo);
+                response.ping = true;
+                callback()
+            }
+        });
+
+
     }
 
 
@@ -122,7 +136,7 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
                     let callbacked = false;
 
 
-                    setTimeout(function() {
+                    let timo = setTimeout(function() {
                         if (!callbacked) {
                             response.ip = "none";
                             response.server = false;
@@ -131,12 +145,14 @@ export =function(obj: { server: any, ping: boolean, get: boolean }) {
                     }, 10000)
 
                     http.get(obj.server, function(res) {
-                        response.server = true;
                         callbacked = true;
+                        clearTimeout(timo);
+                        response.server = true;
                         callback()
                     }).on('error', function(e) {
-                        response.server = false;
                         callbacked = true;
+                        clearTimeout(timo);
+                        response.server = false;
                         callback(new Error(e))
                     });
                 };
