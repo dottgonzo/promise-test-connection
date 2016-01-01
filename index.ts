@@ -170,9 +170,9 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
             function(err) {
 
                 if (err) {
-                    reject(response)
+                    return reject(response)
                 } else {
-                    resolve(response)
+                    return resolve(response)
                 }
                 // the results array will equal ['one','two'] even though
                 // the second function had a shorter timeout.
