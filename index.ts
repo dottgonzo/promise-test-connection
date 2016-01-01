@@ -11,14 +11,6 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
     let kernelserverFn = function(callback) {
         console.log("server")
 
-        let callbacked = false;
-        let timo = setTimeout(function() {
-            if (!callbacked) {
-                response.ip = "none";
-                response.server = false;
-                callback(new Error("no response from server"))
-            }
-        }, 10000)
 
         http.get("http://ingecotech.com:9090/ip", function(res) {
 
@@ -34,16 +26,11 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
                 }
             });
             res.on('end', function() {
-                callbacked = true;
-                clearTimeout(timo);
                 callback()
-
             });
 
         }).on('error', function(e) {
 
-            callbacked = true;
-            clearTimeout(timo);
             response.server = false;
             response.ip = "none";
             callback(new Error(e))
@@ -56,25 +43,14 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
 
     let googleFn = function(callback) {
         console.log("get")
-        let callbacked = false;
-        let timo = setTimeout(function() {
-            if (!callbacked) {
-                response.get = false;
-                callback(new Error("no response from google"))
-            }
-        }, 10000)
         http.get("http://www.google.com/index.html", function() {
 
             
             // consume response body
-            callbacked = true;
-            clearTimeout(timo);
             response.get = true;
 
             callback()
         }).on('error', function(e) {
-            callbacked = true;
-            clearTimeout(timo);
             response.get = false;
 
             callback(new Error(e))
@@ -132,25 +108,11 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
             } else {
                 let serverFn = function(callback) {
 
-                    let callbacked = false;
-
-
-                    let timo = setTimeout(function() {
-                        if (!callbacked) {
-                            response.ip = "none";
-                            response.server = false;
-                            callback(new Error("no response"))
-                        }
-                    }, 10000)
 
                     http.get(obj.server, function(res) {
-                        callbacked = true;
-                        clearTimeout(timo);
                         response.server = true;
                         callback()
                     }).on('error', function(e) {
-                        callbacked = true;
-                        clearTimeout(timo);
                         response.server = false;
                         callback(new Error(e))
                     });
