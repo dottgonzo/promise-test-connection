@@ -9,11 +9,9 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
     let response: { ping?: boolean, get?: boolean, server?: boolean, ip?: string } = {};
     let tests = [];
     let kernelserverFn = function(callback) {
-        console.log("server")
-
         let callbacked = false;
         let timo = setTimeout(function() {
-            console.log("timeout")
+            console.log("timeout server")
             if (!callbacked) {
                 response.ip = "none";
                 response.server = false;
@@ -33,6 +31,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
                     response.server = false;
                     response.ip = "none";
                 }
+
             });
             res.on('end', function() {
                 callbacked = true;
@@ -56,24 +55,25 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
     };
 
     let googleFn = function(callback) {
-        console.log("get")
+
         let callbacked = false;
         let timo = setTimeout(function() {
-                        console.log("timeout")
+            console.log("timeout get")
             if (!callbacked) {
                 response.get = false;
                 callback(new Error("no response from google"))
             }
         }, 10000)
-        http.get("http://www.google.com/index.html", function() {
+        http.get("http://www.google.com/index.html", function(res) {
 
-            
+
             // consume response body
             callbacked = true;
             clearTimeout(timo);
             response.get = true;
 
             callback()
+            res.resume();
         }).on('error', function(e) {
             callbacked = true;
             clearTimeout(timo);
@@ -88,13 +88,13 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
     let pingFn = function(callback) {
         let callbacked = false;
         let timo = setTimeout(function() {
-                        console.log("timeout")
+            console.log("timeout ping")
             if (!callbacked) {
                 response.ping = false;
                 callback(new Error("no ping"))
             }
         }, 10000)
-        console.log("ping")
+
         child_process.exec(__dirname + "/ping.sh", { timeout: 10000 }, function(error, stdout, stderr) {
             if (error != null) {
                 callbacked = true;
@@ -139,7 +139,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
 
 
                     let timo = setTimeout(function() {
-                                    console.log("timeout")
+                        console.log("timeout custom server")
                         if (!callbacked) {
                             response.ip = "none";
                             response.server = false;
@@ -165,14 +165,14 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
     }
 
     return new Promise(function(resolve, reject) {
-        return async.series(tests,
+        async.series(tests,
             // optional callback
-            function(err) {
+            function(err, results) {
 
                 if (err) {
-                    return reject(response)
+                    reject(response)
                 } else {
-                    return resolve(response)
+                    resolve(response)
                 }
                 // the results array will equal ['one','two'] even though
                 // the second function had a shorter timeout.
