@@ -167,7 +167,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
     return new Promise(function(resolve, reject) {
         async.series(tests,
             // optional callback
-            function(err, results) {
+            function(err) {
 
                 if (err) {
                     reject(response)
