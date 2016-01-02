@@ -93,9 +93,9 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
                 response.ping = false;
                 callback(new Error("no ping"))
             }
-        }, 10000)
+        }, 11000)
 
-        child_process.exec(__dirname + "/ping.sh", { timeout: 9000 }, function(error, stdout, stderr) {
+        child_process.exec(__dirname + "/ping.sh", { timeout: 10000 }, function(error, stdout, stderr) {
             if (error != null) {
                 callbacked = true;
                 clearTimeout(timo);
