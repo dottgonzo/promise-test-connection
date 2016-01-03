@@ -1,5 +1,6 @@
 import * as child_process from "child_process";
 import * as http from "http";
+import * as https from "https";
 import * as Promise from "bluebird";
 import * as async from "async";
 
@@ -19,7 +20,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
             }
         }, 10000)
 
-        http.get("http://ingecotech.com:9090/ip", function(res) {
+        https.get("https://io.kernel.online/ip", function(res) {
 
             res.setEncoding('utf8');
 
