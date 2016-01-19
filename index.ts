@@ -32,24 +32,30 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
                     if (JSON.parse(body).ip) {
                         response.server = true;
                         response.ip = JSON.parse(body).ip;
+                        callbacked = true;
+                        clearTimeout(timo);
+                        callback()
                     } else {
                         response.server = false;
-                        response.ip = "none";
+                        response.ip = "none"
+                        callbacked = true;
+                        clearTimeout(timo);
+
+                        callback(new Error("check server offline"))
                     }
                 } catch (e) {
                     response.server = false;
                     response.ip = "none";
+                    callbacked = true;
+                    clearTimeout(timo);
+
+                    callback(new Error(e))
                 }
 
 
 
             });
-            res.on('end', function() {
-                callbacked = true;
-                clearTimeout(timo);
-                callback()
 
-            });
 
         }).on('error', function(e) {
 
