@@ -25,13 +25,23 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
             res.setEncoding('utf8');
 
             res.on("data", function(body) {
-                if (body && JSON.parse(body) && JSON.parse(body).ip) {
-                    response.server = true;
-                    response.ip = JSON.parse(body).ip;
-                } else {
+
+
+                try {
+
+                    if (JSON.parse(body).ip) {
+                        response.server = true;
+                        response.ip = JSON.parse(body).ip;
+                    } else {
+                        response.server = false;
+                        response.ip = "none";
+                    }
+                } catch (e) {
                     response.server = false;
                     response.ip = "none";
                 }
+
+
 
             });
             res.on('end', function() {
