@@ -1,6 +1,6 @@
 {
   "name": "promise-test-connection",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "connectioninfo": "./bin/main.js"
   },
   "author": "",
-  "license": "GPLv2",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/dottgonzo/promise-test-connection/issues"
   },

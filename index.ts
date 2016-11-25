@@ -5,7 +5,7 @@ import * as Promise from "bluebird";
 import * as async from "async";
 
 
-export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
+export default function testconnection(obj?: { server?: any, ping?: boolean, get?: boolean }) {
 
     let response: { ping?: boolean, get?: boolean, server?: boolean, ip?: string } = {};
     let tests = [];
@@ -28,9 +28,9 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
 
 
                 try {
-                    if (JSON.parse(body).ip) {
+                    if (JSON.parse(body.toString()).ip) {
                         response.server = true;
-                        response.ip = JSON.parse(body).ip;
+                        response.ip = JSON.parse(body.toString()).ip;
                         callbacked = true;
                         clearTimeout(timo);
                         callback();
@@ -46,7 +46,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
                     response.ip = "none";
                     callbacked = true;
                     clearTimeout(timo);
-                    callback(new Error(e));
+                    callback(e);
                 }
             });
 
@@ -56,7 +56,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
             clearTimeout(timo);
             response.server = false;
             response.ip = "none";
-            callback(new Error(e));
+            callback(e);
         });
 
 
@@ -64,10 +64,10 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
 
     };
 
-    let googleFn = function(callback) {
+    const googleFn = function(callback) {
 
         let callbacked = false;
-        let timo = setTimeout(function() {
+        const timo = setTimeout(function() {
             console.log("timeout get");
             if (!callbacked) {
                 response.get = false;
@@ -88,7 +88,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
             callbacked = true;
             clearTimeout(timo);
             response.get = false;
-            callback(new Error(e));
+            callback(e);
         });
 
 
@@ -139,10 +139,10 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
         }
 
         if (obj.server) {
-            if (obj.server == true) {
+            if (obj.server === true) {
                 tests.push(kernelserverFn);
             } else {
-                let serverFn = function(callback) {
+                const serverFn = function(callback) {
 
                     let callbacked = false;
 
@@ -165,7 +165,7 @@ export =function(obj?: { server?: any, ping?: boolean, get?: boolean }) {
                         callbacked = true;
                         clearTimeout(timo);
                         response.server = false;
-                        callback(new Error(e));
+                        callback(e);
                     });
                 };
                 tests.push(serverFn);
